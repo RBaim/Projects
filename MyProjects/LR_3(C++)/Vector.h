@@ -18,10 +18,10 @@ public:
     Vector(int lenght, __DataType start);
     Vector(std::initializer_list <__DataType> l);
     Vector(const Vector& c_vector);
-    Vector(const Vector&& c_vector);
+    Vector(Vector&& c_vector);
     ~Vector();
     Vector& operator=(const Vector& c_vector);
-    Vector& operator=(const Vector&& c_vector); 
+    Vector& operator=(Vector&& c_vector);
     __DataType& operator[] (int i);
     iterator Begin();
     iterator End();
@@ -79,8 +79,12 @@ Vector<__DataType>::Vector(const Vector& c_vector) {
 }
 
 template <typename __DataType>
-Vector<__DataType>::Vector(const Vector&& c_vector) : Vector(&c_vector) {
-    c_vector.~Vector();
+Vector<__DataType>::Vector(Vector&& c_vector) {
+    array = c_vector.array;
+    size  = c_vector.size;
+    maxsize = c_vector.maxsize;
+    c_vector.array = nullptr;
+    c_vector.size = c_vector.maxsize = 0;
 }
 
 template <typename __DataType>
@@ -95,9 +99,14 @@ Vector<__DataType>& Vector<__DataType>::operator=(const Vector& c_vector) {
 }
 
 template <typename __DataType>
-Vector<__DataType>& Vector<__DataType>::operator=(const Vector&& c_vector) {
-    *this = c_vector;
-    c_vector.~Vector();
+Vector<__DataType>& Vector<__DataType>::operator=(Vector&& c_vector) {
+    delete[] array;
+    array = c_vector.array;
+    size  = c_vector.size;
+    maxsize = c_vector.maxsize;
+    c_vector.array = nullptr;
+    c_vector.size = c_vector.maxsize = 0;
+    return *this;
 }
 
 template <typename __DataType>

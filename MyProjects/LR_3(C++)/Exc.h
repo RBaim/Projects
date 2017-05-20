@@ -13,7 +13,7 @@ public:
     }
     Exc(int error_p, const char* message) {
         num_error = error_p;
-        strcpy_s(error_str, message);
+        strcpy(error_str, message);
     }
     virtual void Info() {
         std::cout << "Error " << num_error << std::endl << error_str << std::endl;
@@ -27,7 +27,7 @@ public:
     ErrorIndexArray(int i_e) {
         error_index = i_e;
         num_error = 200;
-        strcpy_s(error_str, "Not found index ");
+        strcpy(error_str, "Not found index ");
     }
     void Info() {
         Exc::Info();

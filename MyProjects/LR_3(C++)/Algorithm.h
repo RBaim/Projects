@@ -27,7 +27,7 @@ Iter MaxElement(Iter begin, Iter end) {
 }
 
 template<typename Iter, typename func>
-void forEach(Iter begin, Iter end, func& each) {
+void forEach(Iter begin, Iter end, func each) {
     for (; begin != end; ++begin)
         each(*begin);
 }
@@ -63,7 +63,7 @@ void Sort(Iter begin, Iter end) {
 }
 
 template<typename Iter, typename Predicate>
-void CopyIf(Iter begin, Iter end, Iter& n_beg, Predicate pred) {
+void CopyIf(Iter begin, Iter end, Iter n_beg, Predicate pred) {
     for (; begin != end; ++begin)
         if (pred(*begin)) {
             *n_beg = *begin;
@@ -72,7 +72,7 @@ void CopyIf(Iter begin, Iter end, Iter& n_beg, Predicate pred) {
 }
 
 template<typename Iter1, typename Iter2>
-void Copy(Iter1 begin, Iter1 end, Iter2& n_beg) {
+void Copy(Iter1 begin, Iter1 end, Iter2 n_beg) {
     for (; begin != end; ++begin) {
         *n_beg = *begin;
         ++n_beg;

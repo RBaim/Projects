@@ -4,7 +4,7 @@ int Menu::STACK::num = 0;
 
 Menu::STACK *Menu::stack = nullptr;
 
-void Menu::push(STACK* &stack, Menu* i) {
+void Menu::push(STACK *&stack, Menu *i) {
     STACK *last_stack = stack;
     stack = new STACK;
     STACK::num++;
@@ -12,7 +12,7 @@ void Menu::push(STACK* &stack, Menu* i) {
     stack->last = last_stack;
 }
 
-Menu* Menu::pop(STACK* &stack) {
+Menu *Menu::pop(STACK *&stack) {
     Menu *pop_elem = stack->elem;
     STACK *temp = stack;
     stack = stack->last;
@@ -47,9 +47,9 @@ Menu::~Menu() {
     }
 }
 
-void Menu::PushLine(int i, char *name, Menu* A, FN a) {
+void Menu::PushLine(int i, char *name, Menu *A, FN a) {
     if (*(line + i)->NameFunc == '\0') {
-        strcpy_s((*(line + i)).NameFunc, sizeof(((*(line + i)).NameFunc)), name);
+        strcpy((*(line + i)).NameFunc, name);
         if (&A != nullptr) {
             (*(line + i)).Next = A;
         }
@@ -59,7 +59,7 @@ void Menu::PushLine(int i, char *name, Menu* A, FN a) {
     }
 }
 
-std::ostream& operator << (std::ostream &stream, Menu &obj) {
+std::ostream &operator<<(std::ostream &stream, Menu &obj) {
     for (int i = 0; i < obj.lines; i++)
         stream << (*(obj.line + i)).NameFunc << std::endl;
     stream << ">";
@@ -70,22 +70,22 @@ void Menu::Run() {
     if (this != nullptr) {
         int key;
         while (1) {
-            std::cout << *this;//Отображение меню
+            std::cout << *this;//РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РјРµРЅСЋ
             std::cin >> key;
-            system("cls");//Очистка экрана
-            if (line[key - 1].Next == nullptr && line[key - 1].Func == nullptr && STACK::num) {
-                pop(stack)->Run();//Выгрузка из стека, подъем
-                break;
-            }
+            system("cls");//РћС‡РёСЃС‚РєР° СЌРєСЂР°РЅР°
             if (key <= lines && key > 0) {
+                if (line[key - 1].Next == nullptr && line[key - 1].Func == nullptr && STACK::num) {
+                    pop(stack)->Run();//Р’С‹РіСЂСѓР·РєР° РёР· СЃС‚РµРєР°, РїРѕРґСЉРµРј
+                    break;
+                }
                 if (line[key - 1].Func != nullptr && line[key - 1].Next != nullptr) {
                     line[key - 1].Func();
                     if (line[key - 1].Next != this) {
                         if (STACK::num && stack->elem == line[key - 1].Next) {
-                            pop(stack)->Run();//Выгрузка из стека
+                            pop(stack)->Run();//Р’С‹РіСЂСѓР·РєР° РёР· СЃС‚РµРєР°
                             break;
                         }
-                        push(stack, this);//Загрузка в стек
+                        push(stack, this);//Р—Р°РіСЂСѓР·РєР° РІ СЃС‚РµРє
                         line[key - 1].Next->Run();
                         break;
                     }
@@ -93,23 +93,24 @@ void Menu::Run() {
                 if (line[key - 1].Func == nullptr) {
                     if (line[key - 1].Next != this) {
                         if (STACK::num && stack->elem == line[key - 1].Next) {
-                            pop(stack)->Run();//Выгрузка из стека
+                            pop(stack)->Run();//Р’С‹РіСЂСѓР·РєР° РёР· СЃС‚РµРєР°
                             break;
                         }
-                        push(stack, this);//Загрузка в стек
+                        push(stack, this);//Р—Р°РіСЂСѓР·РєР° РІ СЃС‚РµРє
                         line[key - 1].Next->Run();
                         break;
                     }
                 }
-                if(line[key - 1].Func != nullptr && line[key - 1].Next == nullptr) {
+                if (line[key - 1].Func != nullptr && line[key - 1].Next == nullptr) {
                     line[key - 1].Func();
                     std::cout << "Input Enter>";
                     fflush(stdin);
                     std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Ожидание действия пользователя после выполнения программы
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                                    '\n');//РћР¶РёРґР°РЅРёРµ РґРµР№СЃС‚РІРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕСЃР»Рµ РІС‹РїРѕР»РЅРµРЅРёСЏ РїСЂРѕРіСЂР°РјРјС‹
                     //while (getchar() != '\n');
                     std::cin.get();//
-                    system("cls");//Очистка экрана
+                    system("cls");//РћС‡РёСЃС‚РєР° СЌРєСЂР°РЅР°
                 }
             }
         }

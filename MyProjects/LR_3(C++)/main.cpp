@@ -34,10 +34,14 @@ template <typename T>
 class Func {
 public:
     std::ofstream out;
-    Func(std::string name) {
-        out.open(name);
+    std::string name;
+    Func(std::string name_p) {
+        out.open(name_p);
+        name = name_p;
     }
-    Func(const Func& p) = default;
+    Func(const Func& p) {
+        out.open(p.name);
+    }
     ~Func() {
         out.close();
     }
@@ -72,7 +76,7 @@ int main() {
     std::ofstream fout("test1.txt");
     forEach(a.Begin(), a.End(), [&fout](int i) { fout << i << ' '; });
     fout.close();
-    forEach(a.Begin(), a.End(), Func<int>("2.txt") );
+    forEach(a.Begin(), a.End(), Func<int>("2.txt"));
     List<int> a_c(6, 0);
     a.Insert(a.Begin() + 1, 2);
     a.PushBack(9);

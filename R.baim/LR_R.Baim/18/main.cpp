@@ -5,31 +5,31 @@
 #include <iostream>
 #include <fstream>
 
-struct Node {//РЎС‚СЂСѓРєС‚СѓСЂР° РґРµСЂРµРІР°(l-Р»РµРІР°СЏ РІРµС‚РІСЊ, r-РїСЂР°РІР°СЏ)
-    char info;//РЎРёРјРІРѕР»(РєР»СЋС‡ СЌР»РµРјРµРЅС‚Р° РґРµСЂРµРІР°)
+struct Node {//Структура дерева(l-левая ветвь, r-правая)
+    char info;//Символ(ключ элемента дерева)
     Node *l, *r;
 };
 
-Node *tr = NULL;//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕСЂРЅСЏ
+Node *tr = NULL;//Инициализация корня
 
-int CountTree(Node *&tree) {//РџРѕРґСЃС‡РµС‚ СЌР»РµРјРµРЅС‚РѕРІ РІ РґРµСЂРµРІРµ
+int CountTree(Node *&tree) {//Подсчет элементов в дереве
     if (tree != NULL) {
         if (tree->l == NULL && tree->r == NULL) {
             return 1;
         } else {
-            return CountTree(tree->l) + CountTree(tree->r) + 1;//+1, С‚.Рє. РЅР°РґРѕ РїРѕСЃС‡РёС‚Р°С‚СЊ РµС‰Рµ СЃР°Рј СЌР»РµРјРµРЅС‚
+            return CountTree(tree->l) + CountTree(tree->r) + 1;//+1, т.к. надо посчитать еще сам элемент
         }
     }
     return 0;
 }
 
-void Add_Node(Node **q, char a) {//РџРѕСЃС‚СЂРѕРµРЅРёРµ РґРµСЂРµРІР°
+void Add_Node(Node **q, char a) {//Построение дерева
     if (*q == NULL) {
         *q = new Node;
         (*q)->r = (*q)->l = NULL;
         (*q)->info = a;
     } else {
-        if (a > (*q)->info) {//РЈСЃР»РѕРІРёРµ РЅРµРѕС…РѕРґРёРјРѕРµ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ РґРµСЂРµРІР°
+        if (a > (*q)->info) {//Условие неоходимое для построения сортированного дерева
             Add_Node(&((*q)->r), a);
         } else {
             Add_Node(&((*q)->l), a);
@@ -37,7 +37,7 @@ void Add_Node(Node **q, char a) {//РџРѕСЃС‚СЂРѕРµРЅРёРµ РґРµСЂРµРІР°
     }
 }
 
-void ShowNode(Node *&tree) {//Р’С‹РІРѕРґ РґРµСЂРµРІР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕ РІ СЃС‚СЂРѕС‡РєСѓ
+void ShowNode(Node *&tree) {//Вывод дерева отсортированно в строчку
     if (tree != NULL) {
         ShowNode(tree->l);
         std::cout << tree->info;
@@ -45,7 +45,7 @@ void ShowNode(Node *&tree) {//Р’С‹РІРѕРґ РґРµСЂРµРІР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅ
     }
 }
 
-void DelNode(Node *&tree) {//РЈРґРµР»РµРЅРёРµ РґРµСЂРµРІР° РёР· РїР°РјСЏС‚Рё
+void DelNode(Node *&tree) {//Удаление дерева из памяти
     if (tree != NULL) {
         DelNode(tree->l);
         DelNode(tree->r);
@@ -54,26 +54,26 @@ void DelNode(Node *&tree) {//РЈРґРµР»РµРЅРёРµ РґРµСЂРµРІР° РёР· РїР°РјСЏС‚Рё
     }
 }
 
-Node *DelElem(Node **root) {//РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РґРµСЂРµРІР°
-    if ((*root)->l == NULL && (*root)->r == NULL) {//Р•СЃР»Рё РЅРµС‚ РЅРёС‡РµРіРѕ РЅРё СЃРїСЂР°РІР°, РЅРё СЃР»РµРІР°
+Node *DelElem(Node **root) {//Удаление элемента дерева
+    if ((*root)->l == NULL && (*root)->r == NULL) {//Если нет ничего ни справа, ни слева
         delete *root;
         *root = NULL;
         return *root;
     } else {
-        if ((*root)->l == NULL) {//Р•СЃР»Рё РµСЃС‚СЊ С‡С‚Рѕ-С‚Рѕ СЃРїСЂР°РІР°
+        if ((*root)->l == NULL) {//Если есть что-то справа
             Node *res = (*root)->r;
             (*root)->l = NULL;
             (*root)->r = NULL;
             delete *root;
             return res;
         }
-        if ((*root)->r == NULL) {//Р•СЃР»Рё РµСЃС‚СЊ С‡С‚Рѕ-С‚Рѕ СЃР»РµРІР°
+        if ((*root)->r == NULL) {//Если есть что-то слева
             Node *res = (*root)->l;
             (*root)->l = NULL;
             (*root)->r = NULL;
             delete *root;
             return res;
-        } else {//Р•СЃР»Рё Рё СЃРїСЂР°РІР° Рё СЃР»РµРІР° С‡С‚Рѕ-С‚Рѕ РµСЃС‚СЊ, РёС‰РµРј С‡РµРј РјРѕР¶РЅРѕ Р·Р°РјРµРЅРёС‚СЊ РєРѕСЂРµРЅСЊ...
+        } else {//Если и справа и слева что-то есть, ищем чем можно заменить корень...
             Node *c = (*root)->l;
             Node *p = (*root);
             while ((c->r) != NULL) {
@@ -94,7 +94,7 @@ Node *DelElem(Node **root) {//РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РґРµСЂРµРІР°
     }
 }
 
-/*void DelNodeCheck(Node **Tree, char &c, bool &key) {//РЈРґР°Р»РµРЅРёРµ РїРѕРІС‚РѕСЂРѕРІ РІ РґРµСЂРµРІРµ, key РЅСѓР¶РµРЅ РґР»СЏ РїСЂРѕРІРµСЂРєРё СѓРґР°Р»СЏРµРјРѕСЃС‚Рё
+/*void DelNodeCheck(Node **Tree, char &c, bool &key) {//Удаление повторов в дереве, key нужен для проверки удаляемости
     if (*Tree != NULL) {
         if (c > (*Tree)->info) {
             DelNodeCheck(&((*Tree)->r), c, key);
@@ -109,7 +109,7 @@ Node *DelElem(Node **root) {//РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РґРµСЂРµРІР°
     }
 }
 
-void DelRepiats(Node **Tree, bool &key) {//Р’РµСЂС…РЅСЏСЏ СЂРµРєСѓСЂСЃРёСЏ СѓРґР°Р»РµРЅРёСЏ РїРѕРІС‚РѕСЂРѕРІ
+void DelRepiats(Node **Tree, bool &key) {//Верхняя рекурсия удаления повторов
     if (*Tree != NULL) {
         key = false;
         DelNodeCheck(&((*Tree)->l), (*Tree)->info, key);
@@ -121,7 +121,7 @@ void DelRepiats(Node **Tree, bool &key) {//Р’РµСЂС…РЅСЏСЏ СЂРµРєСѓСЂСЃРёСЏ СѓРґР
     }
 }*/
 
-void DelAllElem(Node **tree, char e) {//РЈРґР°Р»РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅС‹С… e
+void DelAllElem(Node **tree, char e) {//Удаление всех элементов равных e
     if (*tree != NULL) {
         while (*tree && e == (*tree)->info) {
             *tree = DelElem(tree);
@@ -138,7 +138,7 @@ void DelAllElem(Node **tree, char e) {//РЈРґР°Р»РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚
 
 void DelRepiatsTree(Node **tree) {
     if (*tree != NULL) {
-        DelAllElem(&((*tree)->l), (*tree)->info);//Р­Р»РµРјРµРЅС‚С‹ СЂР°РІРЅС‹Рµ РґР°РЅРЅРѕРјСѓ РјРѕРіСѓС‚ Р±С‹С‚СЊ С‚РѕР»СЊРєРѕ СЃР»РµРІР°
+        DelAllElem(&((*tree)->l), (*tree)->info);//Элементы равные данному могут быть только слева
         if (*tree) {
             DelRepiatsTree(&((*tree)->l));
         }
@@ -149,7 +149,7 @@ void DelRepiatsTree(Node **tree) {
 }
 
 void BoredTreatment(
-        char *a) {//РЈРґР°Р»РµРЅРёРµ РїРѕРІС‚РѕСЂРѕРІ СЃРёРјРІРѕР»РѕРІ РёР· СЃС‚СЂРѕРєРё РЅР°РїСЂСЏРјСѓСЋ(РЅРµРѕР±С…РѕРґРёРјРѕ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ СЃРєРѕСЂРѕСЃС‚Рё Р°Р»РіРѕСЂРёС‚РјР° РґР»СЏ РґРµСЂРµРІР° Рё СЃС‚СЂРѕРєРё
+        char *a) {//Удаление повторов символов из строки напрямую(необходимо для сравнения скорости алгоритма для дерева и строки
     int size = int(strlen(a));
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size; j++) {
@@ -165,7 +165,7 @@ void BoredTreatment(
     *(a + size) = '\0';
 }
 
-void SortStrok(char *a) {//РЎРѕСЂС‚РёСЂРѕРІРєР° СЃС‚СЂРѕРєРё(РЅРµРѕР±С…РѕРґРёРјР° РґР»СЏ РїСЂРёРµРјР»РёРІРѕРіРѕ РІС‹РІРѕРґР° СЃС‚СЂРѕРєРё)
+void SortStrok(char *a) {//Сортировка строки(необходима для приемливого вывода строки)
     char tmp;
     for (int i = 1, z; i < strlen(a); i++) {
         tmp = *(a + i);
@@ -179,19 +179,18 @@ void SortStrok(char *a) {//РЎРѕСЂС‚РёСЂРѕРІРєР° СЃС‚СЂРѕРєРё(РЅРµРѕР±С…РѕРґРёРјР
 }
 
 int main() {
-    setlocale(0, "Russian");
-    char strok[150000];
+    char strok[150001];
     FILE *f = fopen("open.txt", "r+");
     int i = 0;
-    while ((strok[i] = getc(f)) != EOF && i < 150000) {
+    while ((strok[i] = getc(f)) != EOF && i < 150001) {
         i++;
     }
-    strok[i] = '\0';
+    strok[i - 1] = '\0';
     long t, t1, t2;
-    std::cout << "Inputed strok\n";
+    std::cout << "Inputed strok out file\n";
     std::cout << strok << std::endl;
     t1 = clock();
-    for (auto item = 0; item < strlen(strok); item++) {
+    for (int item = 0; item < strlen(strok); item++) {
         Add_Node(&tr, *(strok + item));
     }
     t2 = clock();
@@ -202,7 +201,7 @@ int main() {
     t = clock();
     DelRepiatsTree(&tr);
     std::cout << "Runtime(Binary Tree): " << (clock() - t) / 1000.0 << " s"
-              << std::endl;//Р—Р°РјРµСЂ РІСЂРµРјРµРЅРё Р±РёРЅР°СЂРЅРѕРіРѕ РґРµСЂРµРІР°
+              << std::endl;//Замер времени бинарного дерева
     std::cout << "For build tree: " << (t2 - t1) / 1000.0 << " s" << std::endl;
     std::cout << "Tree not repiats(" << CountTree(tr) << ")" << std::endl;
     ShowNode(tr);
@@ -210,8 +209,9 @@ int main() {
     t = clock();
     BoredTreatment(strok);
     SortStrok(strok);
-    std::cout << "Runtime(straight): " << (clock() - t) / 1000.0 << " s" << std::endl << strok
-              << std::endl;//Р—Р°РјРµСЂ РІСЂРµРјРµРЅРё РґР»СЏ СЃС‚СЂРѕРєРё
+    std::cout << "Runtime(straight): " << (clock() - t) / 1000.0 << " s" << std::endl;//Замер времени для строки
+    printf("%s\n", strok);
     DelNode(tr);
     return 0;
 }
+

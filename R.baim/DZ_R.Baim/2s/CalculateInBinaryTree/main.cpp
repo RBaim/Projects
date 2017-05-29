@@ -74,7 +74,7 @@ Node *MakeTree(char term[][32], int first, int last) {
     }
     if (error && !(minop == 100 && term[first][0] == '(' && term[last][0] == ')')) {
         delete res;
-        throw "Ошибка построения дерева";
+        throw "РћС€РёР±РєР° РїРѕСЃС‚СЂРѕРµРЅРёСЏ РґРµСЂРµРІР°";
     }
     if (minop == 100 && term[first][0] == '(' && term[last][0] == ')')
         return MakeTree(term, first + 1, last - 1);
@@ -84,7 +84,7 @@ Node *MakeTree(char term[][32], int first, int last) {
     return res;
 }
 
-void DelNode(Node *&tree) {//Удаление дерева из памяти
+void DelNode(Node *&tree) {//РЈРґР°Р»РµРЅРёРµ РґРµСЂРµРІР° РёР· РїР°РјСЏС‚Рё
     if (tree != NULL) {
         DelNode(tree->l);
         DelNode(tree->r);
@@ -93,12 +93,12 @@ void DelNode(Node *&tree) {//Удаление дерева из памяти
     }
 }
 
-void Calculate(Node **tree) {//Расчет одного корня и удаление потомков, если потомки числа
+void Calculate(Node **tree) {//Р Р°СЃС‡РµС‚ РѕРґРЅРѕРіРѕ РєРѕСЂРЅСЏ Рё СѓРґР°Р»РµРЅРёРµ РїРѕС‚РѕРјРєРѕРІ, РµСЃР»Рё РїРѕС‚РѕРјРєРё С‡РёСЃР»Р°
     if (!(*tree) || !CheckNumber((*tree)->r) || !CheckNumber((*tree)->l)) return;
     double a, b, c;
     a = atof((*tree)->l->info);
     b = atof((*tree)->r->info);
-    if (b == 0. && strchr((*tree)->info, '/')) throw "Деление на 0!";
+    if (b == 0. && strchr((*tree)->info, '/')) throw "Р”РµР»РµРЅРёРµ РЅР° 0!";
     switch ((*tree)->info[0]) {
         case '+':
             c = a + b;
@@ -121,7 +121,7 @@ void Calculate(Node **tree) {//Расчет одного корня и удаление потомков, если пот
     (*tree)->l = (*tree)->r = NULL;
 }
 
-void Calculated(Node **tree) {//Обход дерева для посчета всех операций
+void Calculated(Node **tree) {//РћР±С…РѕРґ РґРµСЂРµРІР° РґР»СЏ РїРѕСЃС‡РµС‚Р° РІСЃРµС… РѕРїРµСЂР°С†РёР№
     if (*tree) {
         Calculated(&((*tree)->l));
         Calculated(&((*tree)->r));
@@ -130,18 +130,18 @@ void Calculated(Node **tree) {//Обход дерева для посчета всех операций
 }
 
 void Inputa_() {
-    std::cout << "Введите a" << std::endl;
+    std::cout << "Р’РІРµРґРёС‚Рµ a" << std::endl;
     std::cin >> a;
-    if (a < -1000 || a > 1000) throw "Число задано неверно, установлено значение по умолчанию(0)\n";
+    if (a < -1000 || a > 1000) throw "Р§РёСЃР»Рѕ Р·Р°РґР°РЅРѕ РЅРµРІРµСЂРЅРѕ, СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ(0)\n";
 }
 
 void Inputb_() {
-    std::cout << "Введите b" << std::endl;
+    std::cout << "Р’РІРµРґРёС‚Рµ b" << std::endl;
     std::cin >> b;
-    if (b < -1000 || b > 1000) throw "Число задано неверно, установлено значение по умолчанию(0)\n";//Вызов исключения
+    if (b < -1000 || b > 1000) throw "Р§РёСЃР»Рѕ Р·Р°РґР°РЅРѕ РЅРµРІРµСЂРЅРѕ, СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ(0)\n";//Р’С‹Р·РѕРІ РёСЃРєР»СЋС‡РµРЅРёСЏ
 }
 
-void Inputa() {//Обработка исключения
+void Inputa() {//РћР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РµРЅРёСЏ
     try {
         Inputa_();
     }
@@ -162,7 +162,7 @@ void Inputb() {
 }
 
 void OutInputCalc() {
-    sprintf(term[4], "%lf", a);//Меняем параменты a и b
+    sprintf(term[4], "%lf", a);//РњРµРЅСЏРµРј РїР°СЂР°РјРµРЅС‚С‹ a Рё b
     sprintf(term[15], "%lf", b);//
     tree = MakeTree(term, 0, 18);
     Calculated(&tree);
@@ -181,7 +181,7 @@ void OutParams() {
     std::cout << "a = " << a << " " << "b = " << b << std::endl;
 }
 
-void ShowNode(Node *&Tree) {//Вывод дерева отсортированно в строчку со скобками(отдельные числа также будут в скобках)
+void ShowNode(Node *&Tree) {//Р’С‹РІРѕРґ РґРµСЂРµРІР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕ РІ СЃС‚СЂРѕС‡РєСѓ СЃРѕ СЃРєРѕР±РєР°РјРё(РѕС‚РґРµР»СЊРЅС‹Рµ С‡РёСЃР»Р° С‚Р°РєР¶Рµ Р±СѓРґСѓС‚ РІ СЃРєРѕР±РєР°С…)
     if (Tree != NULL) {
         std::cout << '(';
         ShowNode(Tree->l);
@@ -199,7 +199,7 @@ void PrintTree(Node *&pNode, int n) {
 }
 
 void Out() {
-    sprintf(term[4], "%lf", a);//Меняем параменты a и b
+    sprintf(term[4], "%lf", a);//РњРµРЅСЏРµРј РїР°СЂР°РјРµРЅС‚С‹ a Рё b
     sprintf(term[15], "%lf", b);//
     tree = MakeTree(term, 0, 18);
     ShowNode(tree);
@@ -241,7 +241,7 @@ void DelProbels(char *str) {
 }
 
 void InputCalculate() {
-    std::cout << "Введите выражения для расчета" << std::endl;
+    std::cout << "Р’РІРµРґРёС‚Рµ РІС‹СЂР°Р¶РµРЅРёСЏ РґР»СЏ СЂР°СЃС‡РµС‚Р°" << std::endl;
     char str[100];
     int count = 0;
     double tmp;
@@ -268,7 +268,7 @@ void InputCalculate() {
                         out++;
                     switch (key_r) {
                         case 0:
-                            std::cout << "Введите значение: " << std::endl;
+                            std::cout << "Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ: " << std::endl;
                             break;
                         case 1:
                             break;
@@ -295,12 +295,12 @@ void InputCalculate() {
         }
         try {
             tree = MakeTree(calc, 0, count - 1);
-            std::cout << "Дерево:";
+            std::cout << "Р”РµСЂРµРІРѕ:";
             std::cout << std::endl << std::endl;
             PrintTree(tree, 10);
             std::cout << std::endl;
             Calculated(&tree);
-            std::cout << "Ответ: " << tree->info << std::endl;
+            std::cout << "РћС‚РІРµС‚: " << tree->info << std::endl;
             std::cout << std::endl;
         }
         catch (const char *ex) {
@@ -308,21 +308,21 @@ void InputCalculate() {
         }
         DelNode(tree);
     } else {
-        std::cout << "Ошибки в выражении" << std::endl;
+        std::cout << "РћС€РёР±РєРё РІ РІС‹СЂР°Р¶РµРЅРёРё" << std::endl;
     }
 }
 
 void Help() {
-    std::cout << "Программа считает выражение (1+a)*(2-3*(7-b)), где a, b - double(-1000, 1000)" << std::endl;
-    std::cout << "Имееться вывод дерева(со скобами в строку и графически), присутствует генерация чисел" << std::endl;
-    std::cout << "Допустимые буквы и символы в выражении(A-Z, a-z, \"-\")" << std::endl;
-    std::cout << "Для генерации чисел необходимо активировать ключ(+)" << std::endl;
-    std::cout << "Предусмотрена обработка ошибок типа деления на ноль, неправильной расстановки скобок" << std::endl;
-    std::cout << "Для перехода между директориями меню необходимо нажимать два раза enter" << std::endl;
+    std::cout << "РџСЂРѕРіСЂР°РјРјР° СЃС‡РёС‚Р°РµС‚ РІС‹СЂР°Р¶РµРЅРёРµ (1+a)*(2-3*(7-b)), РіРґРµ a, b - double(-1000, 1000)" << std::endl;
+    std::cout << "РРјРµРµС‚СЊСЃСЏ РІС‹РІРѕРґ РґРµСЂРµРІР°(СЃРѕ СЃРєРѕР±Р°РјРё РІ СЃС‚СЂРѕРєСѓ Рё РіСЂР°С„РёС‡РµСЃРєРё), РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РіРµРЅРµСЂР°С†РёСЏ С‡РёСЃРµР»" << std::endl;
+    std::cout << "Р”РѕРїСѓСЃС‚РёРјС‹Рµ Р±СѓРєРІС‹ Рё СЃРёРјРІРѕР»С‹ РІ РІС‹СЂР°Р¶РµРЅРёРё(A-Z, a-z, \"-\")" << std::endl;
+    std::cout << "Р”Р»СЏ РіРµРЅРµСЂР°С†РёРё С‡РёСЃРµР» РЅРµРѕР±С…РѕРґРёРјРѕ Р°РєС‚РёРІРёСЂРѕРІР°С‚СЊ РєР»СЋС‡(+)" << std::endl;
+    std::cout << "РџСЂРµРґСѓСЃРјРѕС‚СЂРµРЅР° РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє С‚РёРїР° РґРµР»РµРЅРёСЏ РЅР° РЅРѕР»СЊ, РЅРµРїСЂР°РІРёР»СЊРЅРѕР№ СЂР°СЃСЃС‚Р°РЅРѕРІРєРё СЃРєРѕР±РѕРє" << std::endl;
+    std::cout << "Р”Р»СЏ РїРµСЂРµС…РѕРґР° РјРµР¶РґСѓ РґРёСЂРµРєС‚РѕСЂРёСЏРјРё РјРµРЅСЋ РЅРµРѕР±С…РѕРґРёРјРѕ РЅР°Р¶РёРјР°С‚СЊ РґРІР° СЂР°Р·Р° enter" << std::endl;
 }
 
 void KeyRand() {
-    std::cout << "Активность ключа: ";
+    std::cout << "РђРєС‚РёРІРЅРѕСЃС‚СЊ РєР»СЋС‡Р°: ";
     if (key_r) {
         std::cout << '+';
     } else {
@@ -330,7 +330,7 @@ void KeyRand() {
     }
     std::cout << std::endl;
     bool key_key;
-    std::cout << "Сменить состояние?(1-да, 0-нет)" << std::endl;
+    std::cout << "РЎРјРµРЅРёС‚СЊ СЃРѕСЃС‚РѕСЏРЅРёРµ?(1-РґР°, 0-РЅРµС‚)" << std::endl;
     std::cin >> key_key;
     if (key_key) {
         key_r = !key_r;
@@ -342,17 +342,17 @@ int main() {
     srand(time(NULL));
     setlocale(LC_ALL, "Russian");
     Menu Main(
-            10);//Объект меню который играет роль интерфейса, можно строить иерархию меню, связав несколько таких объектов(3 параметр)
-    Main.PushLine(0, "1.Ввести a", nullptr, &Inputa);//Инициализация строк меню
-    Main.PushLine(1, "2.Ввести b", nullptr, &Inputb);
-    Main.PushLine(2, "3.Генерир. a и b", nullptr, &Random);
-    Main.PushLine(3, "4.Просмотреть a и b", nullptr, &OutParams);
-    Main.PushLine(4, "5.Посчитать", nullptr, &OutInputCalc);
-    Main.PushLine(5, "6.Вывод дерева", nullptr, &Out);
-    Main.PushLine(6, "7.Калькулятор", nullptr, &InputCalculate);
-    Main.PushLine(7, "8.Ключ рандома для калькулятора", nullptr, &KeyRand);
-    Main.PushLine(8, "9.Помощь", nullptr, &Help);
-    Main.PushLine(9, "10.Выход", nullptr, nullptr);
-    Main.Run();//Запуск меню
+            10);//РћР±СЉРµРєС‚ РјРµРЅСЋ РєРѕС‚РѕСЂС‹Р№ РёРіСЂР°РµС‚ СЂРѕР»СЊ РёРЅС‚РµСЂС„РµР№СЃР°, РјРѕР¶РЅРѕ СЃС‚СЂРѕРёС‚СЊ РёРµСЂР°СЂС…РёСЋ РјРµРЅСЋ, СЃРІСЏР·Р°РІ РЅРµСЃРєРѕР»СЊРєРѕ С‚Р°РєРёС… РѕР±СЉРµРєС‚РѕРІ(3 РїР°СЂР°РјРµС‚СЂ)
+    Main.PushLine(0, "1.Р’РІРµСЃС‚Рё a", nullptr, &Inputa);//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂРѕРє РјРµРЅСЋ
+    Main.PushLine(1, "2.Р’РІРµСЃС‚Рё b", nullptr, &Inputb);
+    Main.PushLine(2, "3.Р“РµРЅРµСЂРёСЂ. a Рё b", nullptr, &Random);
+    Main.PushLine(3, "4.РџСЂРѕСЃРјРѕС‚СЂРµС‚СЊ a Рё b", nullptr, &OutParams);
+    Main.PushLine(4, "5.РџРѕСЃС‡РёС‚Р°С‚СЊ", nullptr, &OutInputCalc);
+    Main.PushLine(5, "6.Р’С‹РІРѕРґ РґРµСЂРµРІР°", nullptr, &Out);
+    Main.PushLine(6, "7.РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ", nullptr, &InputCalculate);
+    Main.PushLine(7, "8.РљР»СЋС‡ СЂР°РЅРґРѕРјР° РґР»СЏ РєР°Р»СЊРєСѓР»СЏС‚РѕСЂР°", nullptr, &KeyRand);
+    Main.PushLine(8, "9.РџРѕРјРѕС‰СЊ", nullptr, &Help);
+    Main.PushLine(9, "10.Р’С‹С…РѕРґ", nullptr, nullptr);
+    Main.Run();//Р—Р°РїСѓСЃРє РјРµРЅСЋ
     return 0;
 }

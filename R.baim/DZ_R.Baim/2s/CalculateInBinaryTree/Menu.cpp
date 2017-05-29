@@ -4,7 +4,7 @@ int Menu::STACK::num = 0;
 
 Menu::STACK *Menu::stack = nullptr;
 
-void Menu::push(STACK* &stack, Menu* i) {
+void Menu::push(STACK *&stack, Menu *i) {
     STACK *last_stack = stack;
     stack = new STACK;
     STACK::num++;
@@ -12,7 +12,7 @@ void Menu::push(STACK* &stack, Menu* i) {
     stack->last = last_stack;
 }
 
-Menu* Menu::pop(STACK* &stack) {
+Menu *Menu::pop(STACK *&stack) {
     Menu *pop_elem = stack->elem;
     STACK *temp = stack;
     stack = stack->last;
@@ -47,7 +47,7 @@ Menu::~Menu() {
     }
 }
 
-void Menu::PushLine(int i, char *name, Menu* A, FN a) {
+void Menu::PushLine(int i, char *name, Menu *A, FN a) {
     if (*(line + i)->NameFunc == '\0') {
         strcpy((*(line + i)).NameFunc, name);
         if (&A != nullptr) {
@@ -59,7 +59,7 @@ void Menu::PushLine(int i, char *name, Menu* A, FN a) {
     }
 }
 
-std::ostream& operator << (std::ostream &stream, Menu &obj) {
+std::ostream &operator<<(std::ostream &stream, Menu &obj) {
     for (int i = 0; i < obj.lines; i++)
         stream << (*(obj.line + i)).NameFunc << std::endl;
     stream << ">";
@@ -101,12 +101,13 @@ void Menu::Run() {
                         break;
                     }
                 }
-                if(line[key - 1].Func != nullptr && line[key - 1].Next == nullptr) {
+                if (line[key - 1].Func != nullptr && line[key - 1].Next == nullptr) {
                     line[key - 1].Func();
                     std::cout << "Input Enter>";
                     fflush(stdin);
                     std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Ожидание действия пользователя после выполнения программы
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                                    '\n');//Ожидание действия пользователя после выполнения программы
                     //while (getchar() != '\n');
                     std::cin.get();//
                     system("cls");//Очистка экрана

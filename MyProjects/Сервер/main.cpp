@@ -9,18 +9,14 @@ SOCKET Listen;
 
 int ClienCount = 0;
 
-void SendMessageToClient(int ID)
-{
+void SendMessageToClient(int ID) {
 	char *buffer = new char[1024];
-	for (;; Sleep(75))
-	{
+	for (;; Sleep(75)) {
 		memset(buffer, 0, sizeof(buffer));
-		if (recv(connections[ID], buffer, 1024, NULL))
-		{
+		if (recv(connections[ID], buffer, 1024, NULL)) {
 			printf(buffer);
 			printf("\n");
-			for (int i = 0; i <= ClienCount; i++)
-			{
+			for (int i = 0; i <= ClienCount; i++) {
 				send(connections[i], buffer, strlen(buffer), NULL);
 			}
 		}
@@ -28,15 +24,13 @@ void SendMessageToClient(int ID)
 	delete buffer;
 }
 
-int main()
-{
+int main() {
 	setlocale(LC_ALL, "Russian");
 	char port[10];
 	WSAData data;
 	WORD version = MAKEWORD(2, 2);
 	int res = WSAStartup(version, &data);
-	if (res != 0)
-	{
+	if (res != 0) {
 		return 0;
 	}
 	struct addrinfo hints;
@@ -56,10 +50,8 @@ int main()
 	freeaddrinfo(result);
 	printf("Server started\r");
 	char m_connect[] = "Connected";
-	for (;; Sleep(75))
-	{
-		if (Connect = accept(Listen, NULL, NULL))
-		{
+	for (;; Sleep(75)) {
+		if (Connect = accept(Listen, NULL, NULL)) {
 			printf("Client connection: %s\n");
 			connections[ClienCount] = Connect;
 			send(connections[ClienCount], m_connect, strlen(m_connect), NULL);

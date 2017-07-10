@@ -3,9 +3,14 @@
 #include <ctime>
 #include <WS2tcpip.h>
 
+#include <cstring>
+
 SOCKET Client;
 
+const int COMMAND_COUNT = 2;
+
 char name[24];
+char *commands[9] = {"color", "new_name"};
 
 void SendMessageToClient() {
     char out[1024];
@@ -16,6 +21,33 @@ void SendMessageToClient() {
             printf("\n");
         }
     }
+}
+
+void COLOR_T_B() {
+    printf("Input a, b(params color)");
+    char a, b;
+    scanf("%c%c", &a, &b);
+    char command_cmd[16];
+    sprintf(command_cmd, "color %c%c", a, b);
+    system(command_cmd);
+}
+
+void NEW_N() {
+    printf("Input new name \n");
+    scanf("%s", &name);
+    strcat(name, ": ");
+}
+
+bool Menu(char *command) {
+    for(int i = 0; i < COMMAND_COUNT; ++i) {
+        if(strcmp(command, commands[i]) == 0) {
+            switch(i) {
+                case 0: COLOR_T_B(); return true;
+                case 1: NEW_N(); return true;
+            }
+        }
+    }
+    return false;
 }
 
 int main() {
@@ -78,6 +110,7 @@ int main() {
         fflush(stdin);
         gets(in);
         if(strcmp(in, "exit") == 0) break;
+        if(Menu(in)) continue;
         strcat(message, in);
         send(Client, message, strlen(message), 0);
     } while (1);

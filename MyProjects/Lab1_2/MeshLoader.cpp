@@ -87,13 +87,13 @@ std::vector<Element> MeshLoader::FindElements(int *ID, int size) {
 
 std::vector<Element> MeshLoader::FindElemIDmater(int ID_material) {
     std::vector<Element> find_el;
-    forEach(s_elem.begin(), s_elem.end(), [&find_el, &ID_material](Element& el){if(ID_material == el.material_ID) find_el.push_back(el);});
+    CopyIf(s_elem.begin(), s_elem.end(), find_el.begin(), [&ID_material](Element& el){if(ID_material == el.material_ID) return true; return false;});
     return find_el;
 }
 
 std::vector<Surface> MeshLoader::FindSurfIDcond(int IDcond) {
     std::vector<Surface> find_sr;
-    forEach(s_surf.begin(), s_surf.end(), [&find_sr, &IDcond](Surface& sr){if(IDcond == sr.ID_surf_cond) find_sr.push_back(sr);});
+    CopyIf(s_surf.begin(), s_surf.end(), find_sr.begin(), [&IDcond](Surface& sr){if(IDcond == sr.ID_surf_cond) return true; return false;});
     return find_sr;
 }
 

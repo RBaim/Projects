@@ -26,7 +26,7 @@ public:
     std::vector<Surface> FindSurfIDcond(int IDcond);
     std::vector<Element> FindElemIDmater(int ID_material);
     std::vector<Node> FindNodeIDcond(int IDcond);
-    std::vector<Element> NeighborElementEach();
+    std::vector<std::pair<Node, std::vector<Node>>> NeighborElementEach();
     void OutData();
     ~MeshLoader() = default;
 };

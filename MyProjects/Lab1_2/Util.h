@@ -50,13 +50,14 @@ template <typename T, char c>
 int type_arr<T, c>::dim = 0;//default*/
 
 struct Node {
-    Vector<double> coords;
+    int ID;
+    std::vector<double> coords;
     bool apex;
 };
 
 struct Element {
     int material_ID;
-    Vector<int> ID_node;
+    std::vector<int> ID_node;
 };
 
 struct Surface : public Element {

@@ -6,17 +6,16 @@
 void MeshLoader::OutData() {
     int i = 1;
     std::cout << "Nodes:" << std::endl;
-    forEach(s_node.begin(), s_node.end(), [&i](Node el){std::cout << std::setw(4) << i++ << ": ";
-        forEach(el.coords.Begin(), el.coords.End(), [](double& d){std::cout << std::setw(9) << std::fixed << std::setprecision(4)
+    forEach(s_node.begin(), s_node.end(), [&i](Node el){std::cout << std::setw(4) << el.ID << ": ";
+        forEach(el.coords.begin(), el.coords.end(), [](double& d){std::cout << std::setw(9) << std::fixed << std::setprecision(4)
                                                                             << d << ' ';}); std::cout << std::endl;});
-    i = 1;
     std::cout << "Elements:" << std::endl;
     forEach(s_elem.begin(), s_elem.end(), [&i](Element el){std::cout << std::setw(4) << i++ << ": " << std::setw(4) << el.material_ID << ' ';
-    forEach(el.ID_node.Begin(), el.ID_node.End(),[](int& i){std::cout << std::setw(9) << i++ << ' ';}); std::cout << std::endl;});
+    forEach(el.ID_node.begin(), el.ID_node.end(),[](int& i){std::cout << std::setw(9) << i++ << ' ';}); std::cout << std::endl;});
     std::cout << "Surfaces:" << std::endl;
     i = 1;
     forEach(s_surf.begin(), s_surf.end(), [&i](Surface sr){std::cout << std::setw(4) << i++ << ": " << std::setw(4) << sr.ID_surf_cond << ' ';
-    forEach(sr.ID_node.Begin(), sr.ID_node.End(), [](int& i){std::cout<< std::setw(9) << i++ << ' ';}); std::cout << std::endl;});
+    forEach(sr.ID_node.begin(), sr.ID_node.end(), [](int& i){std::cout<< std::setw(9) << i++ << ' ';}); std::cout << std::endl;});
 }
 
 std::vector<Node> MeshLoader::GetNode() {
@@ -62,7 +61,7 @@ public:
     }
     bool operator()(Element& el_p) {
         int *a;
-        int n = el_p.ID_node.Size();
+        int n = el_p.ID_node.size();
         int m = size;
         a = new int[n];
         for (int i = 0; i < n; i++)
@@ -99,7 +98,39 @@ std::vector<Surface> MeshLoader::FindSurfIDcond(int IDcond) {
 
 std::vector<Node> MeshLoader::FindNodeIDcond(int IDcond) {
     std::vector<Node> find_nd;
-    forEach(s_surf.begin(), s_surf.end(), [&find_nd, &IDcond, &s_node](Surface& sr){if(sr.ID_surf_cond == IDcond)
-        for(int i = 0; i < sr.ID_node.Size(); ++i) find_nd.push_back(s_node[sr.ID_node[i]]);});
+    forEach(s_surf.begin(), s_surf.end(), [&](Surface& sr){if(sr.ID_surf_cond == IDcond)
+        for(int i = 0; i < sr.ID_node.size(); ++i) {
+            bool key = true;
+            for(int j = 0; j < find_nd.size(); ++j)
+                if(find_nd[j].ID == sr.ID_node[i]) key = false;
+            if(key) find_nd.push_back(s_node[sr.ID_node[i] - 1]);}});
     return find_nd;
+}
+
+std::vector<std::pair<Node, std::vector<Node>>> MeshLoader::NeighborElementEach() {
+    std::vector<std::pair<Node, std::vector<Node>>> res;
+    bool sear;
+    bool key;
+    std::vector<Node> tmp;
+    forEach(s_node.begin(), s_node.end(), [&](Node& nd) {
+        forEach(s_elem.begin(), s_elem.end(), [&](Element& el) {
+            key = false;
+            for(int i = 0; i < el.ID_node.size(); ++i)
+                if(el.ID_node[i] == nd.ID) {key = true; break;}
+            if(key) {
+                for(int i = 0; i < el.ID_node.size(); ++i) {
+                    sear = true;
+                    if(el.ID_node[i] != nd.ID) {
+                        for (int j = 0; j < tmp.size(); ++j)
+                            if (tmp[j].ID == el.ID_node[i]) sear = false;
+                    } else {
+                        sear = false;
+                    }
+                    if(sear) tmp.push_back(s_node[el.ID_node[i] - 1]);
+                }
+            }
+        });
+        res.push_back(std::make_pair(nd, tmp));
+        tmp.clear();});
+    return res;
 }

@@ -28,16 +28,19 @@ int main(int argc, char* argv[]) {
     std::cout << "Neighbor" << std::endl;
     auto sear = n->NeighborElementEach();
     for(int i = 0; i < sear.size(); ++i) {
-        std::cout << sear[i].first.ID << " (";
-        for(int j = 0; j < sear[i].second.size(); ++j)
-            std::cout << ' ' << sear[i].second[j].ID;
+        std::cout << std::setw(4) << i + 1 << '(';
+        for(int j = 0; j < sear[i].size(); ++j)
+            std::cout << ' ' << sear[i][j];
         std::cout << " )" << std::endl;
     }
     std::cout << "FindNodeIDcond(3)" << std::endl;
     auto s1 = n->FindNodeIDcond(3);
     for(int i = 0; i < s1.size(); ++i)
-        std::cout << s1[i].ID << " ";
+        std::cout << std::setw(5) << s1[i];
     std::cout << std::endl;
+    n->Modify();
+    std::cout << "Modify" << std::endl;
+    n->OutData();
     delete n;
     system("pause");
     return 0;

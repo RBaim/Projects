@@ -8,9 +8,10 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <iterator>
+#include <algorithm>
 #include "Util.h"
 #include "Exc.h"
-#include "Algorithm.h"
 
 class MeshLoader {
 protected:
@@ -25,9 +26,10 @@ public:
     std::vector<Element> FindElements(int *ID, int size);
     std::vector<Surface> FindSurfIDcond(int IDcond);
     std::vector<Element> FindElemIDmater(int ID_material);
-    std::vector<Node> FindNodeIDcond(int IDcond);
-    std::vector<std::pair<Node, std::vector<Node>>> NeighborElementEach();
+    std::vector<int> FindNodeIDcond(int IDcond);
+    std::vector<std::vector<int>> NeighborElementEach();
     void OutData();
+    void Modify();
     ~MeshLoader() = default;
 };
 

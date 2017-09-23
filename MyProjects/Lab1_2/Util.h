@@ -7,7 +7,6 @@
 #include <vector>
 #include "iostream"
 #include "Exc.h"
-#include "Vector.h"
 
 /*template <typename T, char symb>
 class type_arr {
@@ -51,7 +50,7 @@ int type_arr<T, c>::dim = 0;//default*/
 
 struct Node {
     int ID;
-    std::vector<double> coords;
+    double x, y, z;
     bool apex;
 };
 

@@ -1,0 +1,5 @@
+  KEY STOCK_NUM CODE_PROD                     NAME_PROD      DATE     VALID           COST
+    0         1       123                          Milk       412         9            0.5
+    1         1       451                         Robot       390      4000         111999
+    2         2       412                     Chocolate       100       100             25
+    3         2       429                          Book         1      9999          250.9
